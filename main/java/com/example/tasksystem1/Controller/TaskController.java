@@ -43,7 +43,7 @@ public class TaskController {
     public String serch(@PathVariable String title) {
 
         for(TaskSystem t:taskSystem) {
-            t.getTitle().equals(title);
+           if(t.getTitle().equals(title))
         return t.toString() ;
         }
         return "Not Found";
