@@ -38,24 +38,32 @@ public ApiResponse delete(@PathVariable int index){
 
 
 @PutMapping("/diposit/{index}/{amount}")
-public ApiResponse diposit(@PathVariable int index ,@PathVariable Double amount){
-    double dipost = custmors.get(index).getBalance() + amount;
-    custmors.get(index).setBalance(dipost);
-    return new ApiResponse("Succassfuly Diposy");
-}
+    public ApiResponse diposit(@PathVariable int id, @PathVariable Double amount) {
+        for (Bank c : custmors) {
+            if (c.getID() == id) {
+                double dipost = c.getBalance() + amount;
+                c.setBalance(dipost);
+                return new ApiResponse("Diposy");
+            }
+        }return new ApiResponse("faild");
+    }
 
 @PutMapping("/withdraw/{index}/{amount}")
 
-public ApiResponse withdraw(@PathVariable int index, @PathVariable Double amount){
-    if(custmors.get(index).getBalance()<amount){
-        return new ApiResponse("balance not enough");
+    public ApiResponse withdraw(@PathVariable int id, @PathVariable Double amount) {
+
+        for (Bank custmer : custmors) {
+            if (custmer.getID() == id) {
+                if (custmer.getBalance() < amount) {
+                    return new ApiResponse("balance not enough");}
+                else{
+                    double withdraw = custmer.getBalance() - amount;
+                    custmer.setBalance(withdraw);
+                    return new ApiResponse("withdraw");}
+            }
+        }
+        return new ApiResponse("filed");
     }
-
-    double withdraw = custmors.get(index).getBalance()-amount;
-    custmors.get(index).setBalance(withdraw);
-
-    return new ApiResponse("Succassfuly withdraw");
-}
 
 
 }
